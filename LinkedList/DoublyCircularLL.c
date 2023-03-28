@@ -73,14 +73,14 @@ void insertBegin()
 
 void insertLast()
 {
-    struct Node currNode;
+    struct Node *currNode;
     int new_data;
 
     //Dynamic allocation of newNode
     struct Node *newNode = (struct Node*)malloc(sizeof(struct Node));
     
     //Overflow condition
-    if (newNode = NULL)
+    if (newNode == NULL)
     {
         printf("\nOverflow");
     }
@@ -104,11 +104,13 @@ void insertLast()
 
             //and previous of newNode will also be head itself
             newNode->prev = head;
+
+            printf("\nNode inserted");
         }
         else
         {
             //Pointing currNode at head, to traverse till end of list
-            currNode = newNode;
+            currNode = head;
 
             //traverse till end
             while(currNode->next != head)
@@ -129,4 +131,143 @@ void insertLast()
             newNode->next = head;
         }
     }
+    printf("\nNode Inserted");
+}
+
+void deleteBegin()
+{
+    struct Node *temp;
+
+    //Underflow condition
+    if(head == NULL)
+    {
+        printf("\nUnderflow");
+    }
+
+    //If there is only one element
+    else if(head->next == head)
+    {
+        //Empty the head
+        head = NULL;
+
+        //Dynamically free the space 
+        free(head);
+
+        printf("\nNode deleted");
+    }
+    else 
+    {
+        //assigning head value to temp
+        temp = head;
+
+        //Iterating till previous element of head, basitcally to last element as it is circular linked list
+        while(temp->next != head)
+        {
+            temp = temp->next;
+        }
+
+        //Making next of head as next of temp
+        temp->next = head->next;
+
+        //Making next of head's previous as temp
+        head->next->prev = temp;
+
+        //Deallocating the head's space
+        free(head);
+
+        //next of head will be new head
+        head = temp->next;
+
+        printf("\nNode deleted");
+    }
+}
+
+void deleteLast()
+{
+    struct Node *temp;
+
+    //Underflow condition
+    if(head == NULL)
+    {
+        printf("\nUnderflow");
+    }
+    //If there is only one element
+    else if(head->next == head)
+    {
+        temp = temp->next;
+    }
+    else
+    {
+        //Assigning head value to temp
+        temp = head;
+
+        //Iterating till previous element of head, basitcally to last element as it is circular linked list
+        while(temp->next != head)
+        {
+            temp = temp->next;
+        }
+
+        //pointing next of temp's previous to head
+        temp->prev->next = head;
+
+        //Making previous of temp as previous of head
+        head->prev = temp->prev;
+
+        //Dynamically deallocating space
+        free(temp);
+        printf("\nNode deleted");
+    }
+}
+
+void display()
+{
+    struct Node *temp;
+
+    //Assigning addressof head to temp
+    temp = head;
+
+    //If list is empty
+    if(head == NULL)
+    {
+        printf("\nList is empty");
+    }
+    else
+    {
+        //Iterate till last element
+        while(temp->next != head)
+        {
+            printf("\n%d", temp->data);
+            temp = temp->next;
+        }
+        printf("\n%d", temp->data);
+    }
+}
+
+
+int main()
+{
+    int ch;
+    printf("\n1.Insert from front\n2.Insert from end\n3.Delete from front\n4.Delete from end\n5.Display\n6.Exit");
+    while(ch != 6)
+    {
+        printf("\n\nEnter the choice: ");
+        scanf("%d",&ch);
+        switch(ch)
+        {
+            case 1:insertBegin();
+            break;
+            case 2:insertLast();
+            break;
+            case 3:deleteBegin();
+            break;
+            case 4:deleteLast();
+            break;
+            case 5: display();
+            break;
+            case 6: exit(0);
+            break;
+            default: printf("\nInvalid input");
+        }
+    }
+    return 0;
 }
