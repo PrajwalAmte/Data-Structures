@@ -226,6 +226,47 @@ void deleteNode ()
     free(temp);   //free memory
 }
 
+void insertion_sort()
+{
+    struct Node *newNode = (struct Node*)malloc(sizeof(struct Node));
+    int item;
+    printf("\nEnter the Value: ");
+    scanf("%d",&item);
+
+    //Assigning data value to newNode
+    newNode->data = item;
+
+    //if Linked list is empty
+    if(head == NULL || head->data >= newNode->data)
+    {
+        //Making head as next of newNode 
+        newNode->next = head;
+
+        //Making newNode as head
+        head = newNode;
+
+        printf("\nSorted node inserted");
+    }
+    else
+    {
+        //Pointing curr at head
+        struct Node *curr = head;
+
+        //Iterate to right position
+        while(curr->next != NULL && curr->next->data < newNode->data)
+        {
+            curr = curr->next;
+        }
+        //Making next of curr as next of newNode
+        newNode->next = curr->next;
+
+        //newNode will be next of curr
+        curr->next = newNode;
+        
+        printf("\nSorted node inserted");
+    }
+}
+
 
 void display()
 {
@@ -253,7 +294,7 @@ void display()
 int main()
 {
     int ch;
-    printf("\n1.Insert node from start.\n2.Insert node at end.\n3.Insert after given node\n4.Delete from beginning\n5.Delete from end\n6.Delete given node.\n7.Display\n8.Exit");
+    printf("\n1.Insert node from start.\n2.Insert node at end.\n3.Insert after given node\n4.Delete from beginning\n5.Delete from end\n6.Delete given node.\n7.Display\n8.Sorted Insertion\n9.Exit");
     do{
         printf("\n\nEnter your choice: ");
         scanf("%d", &ch);
@@ -273,11 +314,13 @@ int main()
             break;
             case 7: display();
             break;
-            case 8: exit(0);
+            case 8:insertion_sort();
+            break;
+            case 9: exit(0);
             break;
             default:printf("\nInvalid input");
         }
-    } while (ch != 8);
+    } while (ch != 9);
 
     return 0;
 }
